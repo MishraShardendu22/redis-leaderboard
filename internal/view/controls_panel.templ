@@ -1,0 +1,44 @@
+package view
+
+import "redis-leaderboard/internal/model"
+
+templ ControlsPanel(players []model.Player) {
+<section class="controls-panel">
+  <div class="card-header controls-header">
+    <div>
+      <p class="eyebrow">Controls</p>
+      <h2>Score panel</h2>
+    </div>
+    <div class="card-meta">Fixed on the right</div>
+  </div>
+  <div class="controls-list">
+    for _, player := range players {
+      <div class="control-row">
+        <div class="control-info">
+          <span class="control-name">{ player.Name }</span>
+          <span class="control-score">{ player.Score } pts</span>
+        </div>
+        <div class="control-buttons">
+          <button
+            class="score-button score-increase"
+            type="button"
+            hx-post={ "/player/" + player.Name + "/increment" }
+            hx-target="#leaderboard-container"
+            hx-swap="outerHTML"
+            aria-label={ "Increase " + player.Name + " score" }
+          >+</button>
+          <button
+            class="score-button score-decrease"
+            type="button"
+            hx-post={ "/player/" + player.Name + "/decrement" }
+            hx-target="#leaderboard-container"
+            hx-swap="outerHTML"
+            aria-label={ "Decrease " + player.Name + " score" }
+          >-</button>
+        </div>
+      </div>
+    }
+  </div>
+  <p class="controls-footer">Buttons update Redis, then HTMX swaps the leaderboard section in place.</p>
+</section>
+}

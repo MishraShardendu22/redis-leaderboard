@@ -1,0 +1,21 @@
+package view
+
+import "redis-leaderboard/internal/model"
+
+templ LeaderboardRow(player model.Player, movement int64) {
+<div class={ "leaderboard-row", podiumClass(player.Rank) } role="row">
+  <div class="rank-cell" role="cell">
+    <span class={ "rank-badge", podiumClass(player.Rank) }>{ player.Rank }</span>
+    if movement != 0 {
+      <span class={ "movement-badge", movementClass(movement) }>{ movementLabel(movement) }</span>
+    }
+  </div>
+  <div class="player-cell" role="cell">
+    <span class="player-name">{ player.Name }</span>
+    if player.Rank <= 3 {
+      <span class={ "podium-tag", podiumClass(player.Rank) }>{ podiumLabel(player.Rank) }</span>
+    }
+  </div>
+  <div class="score-cell" role="cell">{ player.Score } pts</div>
+</div>
+}

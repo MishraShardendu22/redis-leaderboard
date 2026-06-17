@@ -1,0 +1,25 @@
+package view
+
+import "redis-leaderboard/internal/model"
+
+templ Leaderboard(players []model.Player, movements map[string]int64) {
+<section id="leaderboard-container" class="leaderboard-card" hx-get="/leaderboard" hx-trigger="load, every 5s" hx-swap="outerHTML">
+  <div class="card-header">
+    <div>
+      <p class="eyebrow">Leaderboard</p>
+      <h2>Top players</h2>
+    </div>
+    <div class="card-meta">Sorted by Redis score descending</div>
+  </div>
+  <div class="leaderboard-table" role="table" aria-label="Redis leaderboard">
+    <div class="leaderboard-head" role="row">
+      <span>Rank</span>
+      <span>Player</span>
+      <span class="score-column">Score</span>
+    </div>
+    for _, player := range players {
+      @LeaderboardRow(player, movements[player.Name])
+    }
+  </div>
+</section>
+}
